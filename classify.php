@@ -7,7 +7,7 @@ $headers = getallheaders();
 $apiKey = $headers['X-API-Key'] ?? '';
 
 // 2️⃣ Read your secret API key from file
-$keyFile = __DIR__ . '/api_key.txt';
+$keyFile = __DIR__ . '/secure/api_key.txt';
 if (!file_exists($keyFile)) {
     http_response_code(500);
     echo json_encode(['error' => 'Missing api_key.txt']);
