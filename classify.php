@@ -6,14 +6,14 @@ header('Access-Control-Allow-Origin: *');
 $headers = getallheaders();
 $apiKey = $headers['X-API-Key'] ?? '';
 
-// 2️⃣ Read your secret API key from file
-$keyFile = __DIR__ . '/secure/api_key.txt';
-if (!file_exists($keyFile)) {
+// 2️⃣ Read API key from environment variable
+$validKey = getenv('API_KEY'); // set this in Vercel dashboard
+
+if (!$validKey) {
     http_response_code(500);
-    echo json_encode(['error' => 'Missing api_key.txt']);
+    echo json_encode(['error' => 'API key not configured']);
     exit;
 }
-$validKey = trim(file_get_contents($keyFile));
 
 // 3️⃣ Verify the key
 if ($apiKey !== $validKey) {
@@ -40,4 +40,4 @@ foreach ($botPatterns as $pattern) {
 echo json_encode([
     'visitor_type' => $isBot ? 'bot' : 'human'
 ]);
-?>
+exit;
